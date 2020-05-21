@@ -1,30 +1,30 @@
 <script>
-	export let name;
+  import Router from 'svelte-spa-router'
+  import routes from './routes'
+  import { pollList } from './store/state.js'
+  import GetDataFromApi from './resource/getDataFromApi.js'
+
+  import { onMount } from 'svelte'
+
+  onMount(async () => {
+    const data = await GetDataFromApi('http://localhost:5000/api/v1/resources/congress-outlook')
+    pollList.set(data.poll_list)
+  })
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<section class="wrap">
+  <h1 class="heading">Python + Svelte</h1>
+  <Router {routes} />
+</section>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+  .wrap {
+    margin: 0 20% 0 20%;
+    min-height: calc(100vh - 150px);
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .heading {
+    color: #fc8b65;
+    font-size: 60px;
+  }
 </style>

@@ -1,10 +1,12 @@
 import flask
 import requests
 from flask import jsonify
+from flask_cors import CORS
 from resource.poll_list import parse_poll_list
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+CORS(app)
 
 
 @app.route("/api/v1/resources/congress-outlook", methods=["GET"])

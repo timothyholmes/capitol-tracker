@@ -1,0 +1,19 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "parser": "babel-eslint"
+  },
+  "extends": [
+    "standard",
+    "plugin:vue/essential",
+    "@vue/standard"
+  ],
+  "plugins": [
+    "markdown"
+  ],
+  "rules": {
+    "hapi/hapi-scope-start": "off",
+    "require-await": "off"
+  }
+}

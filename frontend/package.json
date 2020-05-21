@@ -16,6 +16,10 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^0.4.4"
+    "axios": "^0.19.2",
+    "lodash": "^4.17.15",
+    "sirv-cli": "^0.4.4",
+    "svelte-frappe-charts": "^1.1.2",
+    "svelte-spa-router": "^2.1.0"
   }
 }
