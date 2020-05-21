@@ -1,22 +1,18 @@
 [tool.poetry]
-name = "python-sandbox"
+name = "backend"
 version = "0.1.0"
 description = ""
 authors = ["Tim Holmes <timholmez@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-django = "^3.0.6"
-falcon = "^2.0.0"
-gunicorn = "^20.0.4"
 flask = "^1.1.2"
+flask_cors = "^3.0.8"
 requests = "^2.23.0"
-flask-cors = "^3.0.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 black = "^19.10b0"
-flake8 = "^3.8.1"
 pytest-watch = "^4.2.0"
 
 [build-system]

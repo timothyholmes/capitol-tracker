@@ -1,4 +1,4 @@
-from python_sandbox import __version__
+from server import __version__
 
 
 def test_version():
