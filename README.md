@@ -1,5 +1,5 @@
 # Capitol Tracker
 
-Python + Svelte playground with FiveThirtyEight data sets.
+Python + React playground with FiveThirtyEight data sets.
 
 https://data.fivethirtyeight.com/
