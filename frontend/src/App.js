@@ -30,13 +30,13 @@ class App extends React.Component {
         data: this.state.pollList.map((e) => e.adjusted_dem),
         backgroundColor: 'rgba(0, 0, 0, 0)',
         borderColor: '#0377fc',
-        borderWidth: 1
+        borderWidth: 3
       }, {
         label: 'Adjusted Rep',
         data: this.state.pollList.map((e) => e.adjusted_rep),
         backgroundColor: 'rgba(0, 0, 0, 0)',
         borderColor: '#fc0303',
-        borderWidth: 1
+        borderWidth: 3
       }]
     }
 
