@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios'
 import { Line } from 'react-chartjs-2';
+import { uniq, map, filter } from 'lodash'
 
 import './App.css';
 
@@ -14,21 +15,21 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const response = await axios.get('http://localhost:5000/api/v1/resources/congress-outlook')
+    const response = await axios.get('http://localhost:5000/v1/resources/congress-outlook')
     this.setState((state, props) => {
       return {
-        pollList: response.data.poll_list
+        pollList: response.data
       }
     })
   }
 
   render() {
     const data = {
-      labels: this.state.pollList.map((e) => e.createddate),
+      labels: uniq(map(this.state.pollList, (e) => e.time)),
       datasets: [
         {
           label: 'Adjusted Dem',
-          data: this.state.pollList.map((e) => e.adjusted_dem),
+          data: map(filter(this.state.pollList, (e) => e.party === 'democrat'), (e) => e.percentage),
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgba(15, 129, 242, 10)',
           borderWidth: 2,
@@ -37,27 +38,13 @@ class App extends React.Component {
         },
         {
           label: 'Adjusted Rep',
-          data: this.state.pollList.map((e) => e.adjusted_rep),
+          data: map(filter(this.state.pollList, (e) => e.party === 'republican'), (e) => e.percentage),
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgba(252, 3, 3, 10)',
           borderWidth: 2,
           lineTension: 1,
           type: 'line'
-        },
-        // {
-        //   label: 'Dem',
-        //   data: this.state.pollList.map((e) => e.dem),
-        //   backgroundColor: 'rgba(116, 182, 247, 1)',
-        //   borderColor: 'rgba(116, 182, 247, 1)',
-        //   type: 'scatter'
-        // },
-        // {
-        //   label: 'Rep',
-        //   data: this.state.pollList.map((e) => e.rep),
-        //   backgroundColor: 'rgba(252, 109, 109, 1)',
-        //   borderColor: 'rgba(252, 109, 109, 1)',
-        //   type: 'scatter'
-        // },
+        }
       ]
     }
 
