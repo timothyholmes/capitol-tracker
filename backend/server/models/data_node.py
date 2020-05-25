@@ -36,3 +36,23 @@ class DataNode:
         result = client.query("select * from congressional_outlook;")
 
         return result
+
+    @staticmethod
+    def get_measurements():
+        client = InfluxDBClient(
+            "localhost", 8086, "root", "password", "capitol_tracker"
+        )
+
+        result = client.get_list_measurements()
+
+        return result
+
+    @staticmethod
+    def get_series():
+        client = InfluxDBClient(
+            "localhost", 8086, "root", "password", "capitol_tracker"
+        )
+
+        result = client.get_list_series()
+
+        return result

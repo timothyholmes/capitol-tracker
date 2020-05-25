@@ -4,7 +4,7 @@ import math
 from flask import jsonify, request
 from flask_cors import CORS
 from resource.poll_list import parse_poll_list
-from resource.data_node import create_data_node, search
+from resource.data_node import create_data_node, search, find_measurements, find_series
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -34,6 +34,18 @@ def put_data_node_batch():
             )
 
         return jsonify(payload)
+
+
+@app.route("/v1/measurements", methods=["GET"])
+def get_measurements():
+    if request.method == "GET":
+        return jsonify(find_measurements())
+
+
+@app.route("/v1/series", methods=["GET"])
+def get_series():
+    if request.method == "GET":
+        return jsonify(find_series())
 
 
 @app.route("/v1/resources/congress-outlook", methods=["PUT", "GET"])

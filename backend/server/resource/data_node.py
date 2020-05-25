@@ -19,3 +19,15 @@ def search():
     api_response = list(rs.get_points(measurement="congressional_outlook"))
 
     return api_response
+
+
+def find_measurements():
+    rs = DataNode.get_measurements()
+
+    return rs
+
+
+def find_series():
+    rs = DataNode.get_series()
+
+    return rs
