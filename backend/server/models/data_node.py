@@ -4,23 +4,18 @@ from influxdb import InfluxDBClient
 class DataNode:
     """Model for Data Node"""
 
-    measurement = ""
-    tags = ""
-    fields = ""
-    timestamp = ""
-
-    def __init__(self, measurement, tags, fields, timestamp):
+    def __init__(self, measurement, tags, fields, time):
         self.measurement = measurement
         self.tags = tags
         self.fields = fields
-        self.timestamp = timestamp
+        self.time = time
 
     def serialize(self):
         return {
             "measurement": self.measurement,
             "tags": self.tags,
             "fields": self.fields,
-            "timestamp": self.timestamp,
+            "time": self.time,
         }
 
     def create(self):
@@ -31,3 +26,13 @@ class DataNode:
         client.write_points([self.serialize()])
 
         return True
+
+    @staticmethod
+    def search():
+        client = InfluxDBClient(
+            "localhost", 8086, "root", "password", "capitol_tracker"
+        )
+
+        result = client.query("select * from congressional_outlook;")
+
+        return result

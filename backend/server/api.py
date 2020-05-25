@@ -4,7 +4,7 @@ import math
 from flask import jsonify, request
 from flask_cors import CORS
 from resource.poll_list import parse_poll_list
-from resource.data_node import create_data_node
+from resource.data_node import create_data_node, search
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -16,13 +16,8 @@ def put_data_node():
     if request.method == "PUT":
         payload = request.get_json()
 
-        print(payload)
-
         create_data_node(
-            payload["measurement"],
-            payload["tags"],
-            payload["fields"],
-            payload["timestamp"],
+            payload["measurement"], payload["tags"], payload["fields"], payload["time"],
         )
 
         return jsonify(payload)
@@ -35,7 +30,7 @@ def put_data_node_batch():
 
         for node in payload:
             create_data_node(
-                node["measurement"], node["tags"], node["fields"], node["timestamp"],
+                node["measurement"], node["tags"], node["fields"], node["time"],
             )
 
         return jsonify(payload)
@@ -44,12 +39,12 @@ def put_data_node_batch():
 @app.route("/v1/resources/congress-outlook", methods=["PUT", "GET"])
 def congress_outlook():
     if request.method == "PUT":
-        # r = requests.get(
-        #     "https://projects.fivethirtyeight.com/generic-ballot-data/generic_polllist.csv"
-        # )
-        # file = open("assets/pollList.csv", "w")
-        # file.write(r.text)
-        # file.close()
+        r = requests.get(
+            "https://projects.fivethirtyeight.com/generic-ballot-data/generic_polllist.csv"
+        )
+        file = open("assets/pollList.csv", "w")
+        file.write(r.text)
+        file.close()
 
         payload = []
         for poll_list_node in parse_poll_list():
@@ -58,7 +53,7 @@ def congress_outlook():
                     "measurement": "congressional_outlook",
                     "tags": {"party": "democrat"},
                     "fields": {"percentage": poll_list_node.adjusted_dem},
-                    "timestamp": poll_list_node.createddate,
+                    "time": poll_list_node.createddate,
                 }
             )
 
@@ -67,16 +62,17 @@ def congress_outlook():
                     "measurement": "congressional_outlook",
                     "tags": {"party": "republican"},
                     "fields": {"percentage": poll_list_node.adjusted_rep},
-                    "timestamp": poll_list_node.createddate,
+                    "time": poll_list_node.createddate,
                 }
             )
 
-        print(payload[0])
-        requests.put("http://localhost:5000/v1/data-node", data=jsonify(payload[0]))
+        requests.put("http://localhost:5000/v1/data-node/batch", json=payload)
 
         return "", 201
     elif request.method == "GET":
-        return jsonify(poll_list=[e.serialize() for e in parse_poll_list()])
+        response = search()
+
+        return jsonify(response)
 
 
 app.run()
