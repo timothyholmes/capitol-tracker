@@ -25,19 +25,51 @@ class App extends React.Component {
   render() {
     const data = {
       labels: this.state.pollList.map((e) => e.createddate),
-      datasets: [{
-        label: 'Adjusted Dem',
-        data: this.state.pollList.map((e) => e.adjusted_dem),
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        borderColor: '#0377fc',
-        borderWidth: 3
-      }, {
-        label: 'Adjusted Rep',
-        data: this.state.pollList.map((e) => e.adjusted_rep),
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        borderColor: '#fc0303',
-        borderWidth: 3
-      }]
+      datasets: [
+        {
+          label: 'Adjusted Dem',
+          data: this.state.pollList.map((e) => e.adjusted_dem),
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(15, 129, 242, 10)',
+          borderWidth: 2,
+          lineTension: 1,
+          type: 'line'
+        },
+        {
+          label: 'Adjusted Rep',
+          data: this.state.pollList.map((e) => e.adjusted_rep),
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(252, 3, 3, 10)',
+          borderWidth: 2,
+          lineTension: 1,
+          type: 'line'
+        },
+        // {
+        //   label: 'Dem',
+        //   data: this.state.pollList.map((e) => e.dem),
+        //   backgroundColor: 'rgba(116, 182, 247, 1)',
+        //   borderColor: 'rgba(116, 182, 247, 1)',
+        //   type: 'scatter'
+        // },
+        // {
+        //   label: 'Rep',
+        //   data: this.state.pollList.map((e) => e.rep),
+        //   backgroundColor: 'rgba(252, 109, 109, 1)',
+        //   borderColor: 'rgba(252, 109, 109, 1)',
+        //   type: 'scatter'
+        // },
+      ]
+    }
+
+    const options = {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  min: 30,
+                  max: 70
+              }
+          }]
+      }
     }
 
     return (
@@ -49,7 +81,8 @@ class App extends React.Component {
 
         <Line 
           className="line-graph"
-          data={data} />
+          data={data}
+          options={options} />
       </div>
     );
   }
