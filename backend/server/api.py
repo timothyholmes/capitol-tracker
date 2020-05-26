@@ -45,7 +45,8 @@ def get_measurements():
 @app.route("/v1/series", methods=["GET"])
 def get_series():
     if request.method == "GET":
-        return jsonify(find_series())
+        return {"hello": "world"}
+        # return jsonify(find_series())
 
 
 @app.route("/v1/resources/congress-outlook", methods=["PUT", "GET"])
@@ -87,4 +88,5 @@ def congress_outlook():
         return jsonify(response)
 
 
-app.run()
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
