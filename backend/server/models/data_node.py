@@ -20,7 +20,7 @@ class DataNode:
 
     def create(self):
         client = InfluxDBClient(
-            "localhost", 8086, "root", "password", "capitol_tracker"
+            "influxdb.capitol-network", 8086, "root", "password", "capitol_tracker"
         )
 
         client.write_points([self.serialize()])
@@ -30,7 +30,7 @@ class DataNode:
     @staticmethod
     def search():
         client = InfluxDBClient(
-            "localhost", 8086, "root", "password", "capitol_tracker"
+            "influxdb.capitol-network", 8086, "root", "password", "capitol_tracker"
         )
 
         result = client.query("select * from congressional_outlook;")
@@ -40,7 +40,7 @@ class DataNode:
     @staticmethod
     def get_measurements():
         client = InfluxDBClient(
-            "localhost", 8086, "root", "password", "capitol_tracker"
+            "influxdb.capitol-network", 8086, "root", "password", "capitol_tracker"
         )
 
         result = client.get_list_measurements()
@@ -50,7 +50,7 @@ class DataNode:
     @staticmethod
     def get_series():
         client = InfluxDBClient(
-            "localhost", 8086, "root", "password", "capitol_tracker"
+            "influxdb.capitol-network", 8086, "root", "password", "capitol_tracker"
         )
 
         result = client.get_list_series()

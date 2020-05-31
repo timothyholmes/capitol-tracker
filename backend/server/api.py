@@ -79,7 +79,7 @@ def congress_outlook():
                 }
             )
 
-        requests.put("http://localhost:5000/v1/data-node/batch", json=payload)
+        requests.put("http://capitol-tracker-api.capitol-network:5000/v1/data-node/batch", json=payload)
 
         return "", 201
     elif request.method == "GET":

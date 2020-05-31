@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const response = await axios.get('http://localhost:5000/v1/resources/congress-outlook')
+    const response = await axios.get('http://capitol-tracker-api.capitol-network:5000/v1/resources/congress-outlook')
     this.setState((state, props) => {
       return {
         pollList: response.data
