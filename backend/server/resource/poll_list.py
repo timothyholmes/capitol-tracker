@@ -1,16 +1,16 @@
 import csv
 import os
-from models.poll_list_node import PollListNode
+from models.poll_list_node import PollListNodeFactory
 
 
-def parse_poll_list():
-    csvfile = open("./assets/pollList.csv", newline="")
+def parse_poll_list(csvfile):
+    head, *tail = csvfile.split("\n")
 
-    try:
-        csv_reader = csv.reader(csvfile, delimiter=",", quotechar="|")
-        head, *tail = csv_reader
-        poll_list = map(lambda x: PollListNode(*x), tail)
+    factory = PollListNodeFactory(head.split(","))
 
-        return poll_list
-    finally:
-        csvfile.close()
+    poll_list = map(
+        lambda x: factory.create_node(x),
+        filter(lambda x: factory.is_valid_node(x), map(lambda x: x.split(","), tail)),
+    )
+
+    return poll_list

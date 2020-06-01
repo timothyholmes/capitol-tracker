@@ -5,6 +5,7 @@ from flask import jsonify, request
 from flask_cors import CORS
 from resource.poll_list import parse_poll_list
 from resource.data_node import create_data_node, search, find_measurements, find_series
+import os
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -55,18 +56,15 @@ def congress_outlook():
         r = requests.get(
             "https://projects.fivethirtyeight.com/generic-ballot-data/generic_polllist.csv"
         )
-        file = open("assets/pollList.csv", "w")
-        file.write(r.text)
-        file.close()
 
         payload = []
-        for poll_list_node in parse_poll_list():
+        for poll_list_node in parse_poll_list(r.text):
             payload.append(
                 {
                     "measurement": "congressional_outlook",
                     "tags": {"party": "democrat"},
-                    "fields": {"percentage": poll_list_node.adjusted_dem},
-                    "time": poll_list_node.createddate,
+                    "fields": {"percentage": poll_list_node["adjusted_dem"]},
+                    "time": poll_list_node["createddate"],
                 }
             )
 
@@ -74,16 +72,61 @@ def congress_outlook():
                 {
                     "measurement": "congressional_outlook",
                     "tags": {"party": "republican"},
-                    "fields": {"percentage": poll_list_node.adjusted_rep},
-                    "time": poll_list_node.createddate,
+                    "fields": {"percentage": poll_list_node["adjusted_rep"]},
+                    "time": poll_list_node["createddate"],
                 }
             )
 
-        requests.put("http://capitol-tracker-api.capitol-network:5000/v1/data-node/batch", json=payload)
+        batch_url = "http://{host}:{port}/v1/data-node/batch".format(
+            host=os.environ.get("API_HOST"), port=os.environ.get("API_PORT")
+        )
+
+        requests.put(batch_url, json=payload)
 
         return "", 201
     elif request.method == "GET":
-        response = search()
+        response = search("congressional_outlook")
+
+        return jsonify(response)
+
+
+@app.route("/v1/resources/trump-approval-rating", methods=["PUT", "GET"])
+def trump_approval_rating():
+    path = "trump_approval"
+    if request.method == "PUT":
+        r = requests.get(
+            "https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv"
+        )
+
+        payload = []
+        for poll_list_node in parse_poll_list(r.text):
+            payload.append(
+                {
+                    "measurement": path,
+                    "tags": {"party": "approve"},
+                    "fields": {"percentage": poll_list_node["adjusted_approve"]},
+                    "time": poll_list_node["createddate"],
+                }
+            )
+
+            payload.append(
+                {
+                    "measurement": path,
+                    "tags": {"party": "disapprove"},
+                    "fields": {"percentage": poll_list_node["adjusted_disapprove"]},
+                    "time": poll_list_node["createddate"],
+                }
+            )
+
+        batch_url = "http://{host}:{port}/v1/data-node/batch".format(
+            host=os.environ.get("API_HOST"), port=os.environ.get("API_PORT")
+        )
+
+        requests.put(batch_url, json=payload)
+
+        return "", 201
+    elif request.method == "GET":
+        response = search(path)
 
         return jsonify(response)
 

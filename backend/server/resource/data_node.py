@@ -13,10 +13,13 @@ def create_data_node(
     return True
 
 
-def search():
+def search(measurement):
     rs = DataNode.search()
 
-    api_response = list(rs.get_points(measurement="congressional_outlook"))
+    measurements = list(DataNode.get_measurements())
+    print(measurements)
+
+    api_response = list(rs.get_points(measurement="trump_approval_rating"))
 
     return api_response
 
