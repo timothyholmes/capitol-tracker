@@ -1,11 +1,14 @@
 FROM node
-WORKDIR /usr/src/app
-COPY package*.json ./
-COPY . .
+
+WORKDIR /app
+
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
-RUN npm install react-script -g
-RUN npm run build
+RUN npm install react-scripts -g
 
-EXPOSE 3000
+# add app
+COPY . ./
 
-CMD [ "npm", "start" ]
+# start app
+CMD ["npm", "start"]

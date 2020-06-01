@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docker:build": "docker build . -t capitol-tracker-ui",
-    "docker:run": "docker run -p 3000:3000 --net capitol-network --name capitol-tracker-ui capitol-tracker-ui"
+    "docker:run": "docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 3000:3000 --net capitol-network --name capitol-tracker-ui capitol-tracker-ui"
   },
   "eslintConfig": {
     "extends": "react-app"

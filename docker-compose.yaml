@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    environment:
+      - INFLUXDB_DB='capitol_tracker'
+      - INFLUXDB_ADMIN_USER='root'
+      - INFLUXDB_ADMIN_PASSWORD='password'
+      - config=/etc/influxdb/influxdb.conf
+  backend:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    environment:
+      = INFLUXDB_HOST='influxdb'
+    ports:
+      - "5000:5000"
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    stdin_open: true
+    tty: true
