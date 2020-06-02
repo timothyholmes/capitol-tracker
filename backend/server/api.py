@@ -4,7 +4,13 @@ import math
 from flask import jsonify, request
 from flask_cors import CORS
 from resource.poll_list import parse_poll_list
-from resource.data_node import create_data_node, search, find_measurements, find_series
+from resource.data_node import (
+    create_data_node_batch,
+    create_data_node,
+    search,
+    find_measurements,
+    find_series,
+)
 import os
 
 app = flask.Flask(__name__)
@@ -29,10 +35,7 @@ def put_data_node_batch():
     if request.method == "PUT":
         payload = request.get_json()
 
-        for node in payload:
-            create_data_node(
-                node["measurement"], node["tags"], node["fields"], node["time"],
-            )
+        create_data_node_batch(payload)
 
         return jsonify(payload)
 
@@ -85,14 +88,23 @@ def congress_outlook():
 
         return "", 201
     elif request.method == "GET":
-        response = search("congressional_outlook")
+        response = search(["congressional_outlook"])
 
         return jsonify(response)
 
 
+@app.route("/poll-data", methods=["GET"])
+def search_endpoint():
+    measurements = request.args.get("measurements")
+
+    print(measurements)
+
+    return jsonify(search(measurements.split(",")))
+
+
 @app.route("/v1/resources/trump-approval-rating", methods=["PUT", "GET"])
 def trump_approval_rating():
-    path = "trump_approval"
+    path = "trump_approval_rating"
     if request.method == "PUT":
         r = requests.get(
             "https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv"
@@ -103,7 +115,7 @@ def trump_approval_rating():
             payload.append(
                 {
                     "measurement": path,
-                    "tags": {"party": "approve"},
+                    "tags": {"stance": "approve"},
                     "fields": {"percentage": poll_list_node["adjusted_approve"]},
                     "time": poll_list_node["createddate"],
                 }
@@ -112,7 +124,7 @@ def trump_approval_rating():
             payload.append(
                 {
                     "measurement": path,
-                    "tags": {"party": "disapprove"},
+                    "tags": {"stance": "disapprove"},
                     "fields": {"percentage": poll_list_node["adjusted_disapprove"]},
                     "time": poll_list_node["createddate"],
                 }
@@ -126,7 +138,7 @@ def trump_approval_rating():
 
         return "", 201
     elif request.method == "GET":
-        response = search(path)
+        response = search([path])
 
         return jsonify(response)
 

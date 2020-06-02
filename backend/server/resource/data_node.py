@@ -12,14 +12,16 @@ def create_data_node(
 
     return True
 
+def create_data_node_batch(payload):
+    DataNode.create_batch(payload)
 
-def search(measurement):
-    rs = DataNode.search()
+    return True
 
-    measurements = list(DataNode.get_measurements())
-    print(measurements)
 
-    api_response = list(rs.get_points(measurement="trump_approval_rating"))
+def search(measurements):
+    rs = DataNode.search(measurements)
+
+    api_response = list(rs.get_points())
 
     return api_response
 
