@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const response = await axios.get('http://localhost:5000/v1/resources/congress-outlook')
+    const response = await axios.get('http://localhost:5000/poll-data?measurements=trump_approval_rating,congressional_outlook')
     this.setState((state, props) => {
       return {
         pollList: response.data
@@ -31,7 +31,7 @@ class App extends React.Component {
           label: 'Adjusted Dem',
           data: map(filter(this.state.pollList, (e) => e.party === 'democrat'), (e) => e.percentage),
           backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderColor: 'rgba(15, 129, 242, 10)',
+          borderColor: 'rgba(15, 129, 242, 0.5)',
           borderWidth: 2,
           lineTension: 1,
           type: 'line'
@@ -40,7 +40,25 @@ class App extends React.Component {
           label: 'Adjusted Rep',
           data: map(filter(this.state.pollList, (e) => e.party === 'republican'), (e) => e.percentage),
           backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderColor: 'rgba(252, 3, 3, 10)',
+          borderColor: 'rgba(252, 3, 3, 0.5)',
+          borderWidth: 2,
+          lineTension: 1,
+          type: 'line'
+        },
+        {
+          label: 'Trump Approve',
+          data: map(filter(this.state.pollList, (e) => e.stance === 'approve'), (e) => e.percentage),
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(50, 168, 78, 0.5)',
+          borderWidth: 2,
+          lineTension: 1,
+          type: 'line'
+        },
+        {
+          label: 'Trump Disapprove',
+          data: map(filter(this.state.pollList, (e) => e.stance === 'disapprove'), (e) => e.percentage),
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(230, 118, 28, 0.5)',
           borderWidth: 2,
           lineTension: 1,
           type: 'line'
