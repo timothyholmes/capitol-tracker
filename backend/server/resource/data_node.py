@@ -12,13 +12,14 @@ def create_data_node(
 
     return True
 
+
 def create_data_node_batch(payload):
     DataNode.create_batch(payload)
 
     return True
 
 
-def search(measurements):
+def find(measurements):
     rs = DataNode.search(measurements)
 
     api_response = list(rs.get_points())

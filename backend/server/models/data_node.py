@@ -32,7 +32,9 @@ class DataNode:
     def search(measurements):
         client = InfluxDBClient(host, 8086, "root", "password", "capitol_tracker")
 
-        result = client.query("select * from {measurements};".format(measurements=",".join(measurements)))
+        result = client.query(
+            "select * from {measurements};".format(measurements=",".join(measurements))
+        )
 
         return result
 
@@ -59,4 +61,3 @@ class DataNode:
         client.write_points(batch)
 
         return True
-

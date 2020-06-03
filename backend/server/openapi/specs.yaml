@@ -1,0 +1,63 @@
+openapi: "3.0.0"
+
+info:
+  title: Capitol Tracker Python API
+  version: "1.0"
+servers:
+  - url: http://localhost:9090/v1
+
+paths:
+  /data-node:
+    post:
+      operationId: api.data_node.post
+      summary: Batch node upload
+      description: Batch node upload
+      responses:
+        201:
+          description: Batch created
+  /poll-data:
+    get:
+      operationId: api.poll_data.search
+      parameters:
+        - in: query
+          name: measurements
+          schema:
+            type: string
+          description: Measurements to find
+      summary: Search poll data sets
+      description: Seaerch poll data tsets
+      responses:
+        200:
+          description: Search results
+  /measurements:
+    get:
+      operationId: api.measurements.search
+      summary: Get measurements list
+      description: Get list of all measurements in db
+      responses:
+        200:
+          description: measurements list
+  /series:
+    get:
+      operationId: api.series.search
+      summary: Get series list
+      description: Get list of all series in db
+      responses:
+        200:
+          description: series list
+  /workers/congressional-outlook/:
+    post:
+      operationId: api.workers.congressional_outlook.post
+      summary: Import congressional outlook ratings
+      description: Imports congressional outlook ratings to db
+      responses:
+        201:
+          description: data set imported
+  /workers/trump-approval-rating/:
+    post:
+      operationId: api.workers.trump_approval_rating.post
+      summary: Import trump approval ratings
+      description: Imports approval ratings to db
+      responses:
+        201:
+          description: data set imported
