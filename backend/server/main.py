@@ -7,6 +7,8 @@ if __name__ == "__main__":
         __name__, port=os.environ.get("API_PORT"), specification_dir="openapi/"
     )
 
+    CORS(app.app)
+
     swagger_url = "http://{host}:{port}/v1".format(
         host=os.environ.get("API_HOST"), port=os.environ.get("API_PORT")
     )

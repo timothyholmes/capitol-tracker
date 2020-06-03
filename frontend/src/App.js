@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const response = await axios.get('http://localhost:5000/poll-data?measurements=trump_approval_rating,congressional_outlook')
+    const response = await axios.get('http://localhost:5000/v1/poll-data?measurements=trump_approval_rating,congressional_outlook')
     this.setState((state, props) => {
       return {
         pollList: response.data
