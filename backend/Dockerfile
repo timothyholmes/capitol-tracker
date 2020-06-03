@@ -8,4 +8,4 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-CMD [ "poetry", "run", "python", "./server/api.py" ]
+CMD [ "poetry", "run", "python", "./server/main.py" ]

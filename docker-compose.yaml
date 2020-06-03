@@ -18,6 +18,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - INFLUXDB_HOST=influxdb
+      - API_HOST=localhost
+      - API_PORT=5000
     ports:
       - "5000:5000"
   frontend:
