@@ -33,7 +33,9 @@ class DataNode:
         client = InfluxDBClient(host, 8086, "root", "password", "capitol_tracker")
 
         result = client.query(
-            "select * from {measurements};".format(measurements=",".join(measurements))
+            "select * from /{measurements}/ ORDER BY time ASC;".format(
+                measurements="|".join(measurements)
+            )
         )
 
         return result
