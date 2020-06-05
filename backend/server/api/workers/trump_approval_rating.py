@@ -14,7 +14,7 @@ def post():
         payload.append(
             {
                 "measurement": path,
-                "tags": {"stance": "approve"},
+                "tags": {"stance": "trump_approval.approve"},
                 "fields": {"percentage": poll_list_node["adjusted_approve"]},
                 "time": poll_list_node["createddate"],
             }
@@ -23,7 +23,7 @@ def post():
         payload.append(
             {
                 "measurement": path,
-                "tags": {"stance": "disapprove"},
+                "tags": {"stance": "trump_approval.disapprove"},
                 "fields": {"percentage": poll_list_node["adjusted_disapprove"]},
                 "time": poll_list_node["createddate"],
             }

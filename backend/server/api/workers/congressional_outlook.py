@@ -13,7 +13,7 @@ def post():
         payload.append(
             {
                 "measurement": "congressional_outlook",
-                "tags": {"party": "democrat"},
+                "tags": {"stance": "congressional_outlook.democrat"},
                 "fields": {"percentage": poll_list_node["adjusted_dem"]},
                 "time": poll_list_node["createddate"],
             }
@@ -22,7 +22,7 @@ def post():
         payload.append(
             {
                 "measurement": "congressional_outlook",
-                "tags": {"party": "republican"},
+                "tags": {"stance": "congressional_outlook.republican"},
                 "fields": {"percentage": poll_list_node["adjusted_rep"]},
                 "time": poll_list_node["createddate"],
             }
