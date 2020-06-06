@@ -12,6 +12,17 @@ services:
       - INFLUXDB_ADMIN_USER='root'
       - INFLUXDB_ADMIN_PASSWORD='password'
       - config=/etc/influxdb/influxdb.conf
+  rabbit:
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - INFLUXDB_DB='capitol_tracker'
+      - INFLUXDB_ADMIN_USER='root'
+      - INFLUXDB_ADMIN_PASSWORD='password'
+      - config=/etc/influxdb/influxdb.conf
   backend:
     build:
       context: ./backend/
