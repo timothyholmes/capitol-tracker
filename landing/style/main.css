@@ -1,0 +1,40 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,900,700);
+
+:root {
+  --medium-grey: #EAEEF1;
+  --black: #151d3e;
+  --white: #ffffff;
+  --dark-accent: #546475;
+}
+
+html body {
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+  background-color: var(--dark-accent);
+}
+
+.header {
+  padding-top: 12vh;
+  text-align: center;
+  height: 50vh;
+  color: var(--white);
+}
+
+.header h1 {
+  font-weight: 900;
+  font-size: 15vmin;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.header h4 {
+  font-weight: 700;
+  font-size: 4vmin;
+  margin-bottom: 10vmin;
+}
+
+.header p {
+  font-weight: 700;
+  font-size: 2vmin;
+  margin-bottom: 10vmin;
+}
