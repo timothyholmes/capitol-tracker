@@ -3,10 +3,11 @@ import aiormq
 import aiormq.types
 import time
 
+
 async def on_message(message: aiormq.types.DeliveredMessage):
     print(" [x] Received message %r" % (message,))
     print("     Message body is: %r" % (message.body.decode("utf-8"),))
-    time.sleep(message.body.count(b'.'))
+    time.sleep(message.body.count(b"."))
 
 
 async def main():
