@@ -7,6 +7,14 @@ servers:
   - url: http://localhost:9090/v1
 
 paths:
+  /_health:
+    get:
+      operationId: api.health.get
+      summary: Server is up
+      description: Server is up
+      responses:
+        200:
+          description: Server is up
   /data-node:
     post:
       operationId: api.data_node.post
