@@ -1,39 +1,27 @@
 import csv
 import os
 from models.data_node import DataNode
+import calendar
+import time
 
 
-def create_data_node(
-    measurement, tags, fields, time,
-):
-    data_node = DataNode(measurement, tags, fields, time)
-
-    data_node.create()
-
-    return True
-
+def convert_to_nanoseconds(seconds):
+    return int("{seconds}000000000".format(seconds=seconds))
 
 def create_data_node_batch(payload):
+    for dic in payload:
+        dic["time"] = convert_to_nanoseconds(calendar.timegm(time.strptime(dic["time"], '%m/%d/%Y')))
+
     DataNode.create_batch(payload)
 
     return True
 
 
 def find(measurements):
+    print("in resource find")
+
     rs = DataNode.search(measurements)
 
-    api_response = list(rs.get_points())
+    api_response = rs
 
     return api_response
-
-
-def find_measurements():
-    rs = DataNode.get_measurements()
-
-    return rs
-
-
-def find_series():
-    rs = DataNode.get_series()
-
-    return rs

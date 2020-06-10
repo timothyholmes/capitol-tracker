@@ -37,22 +37,6 @@ paths:
       responses:
         200:
           description: Search results
-  /measurements:
-    get:
-      operationId: api.measurements.search
-      summary: Get measurements list
-      description: Get list of all measurements in db
-      responses:
-        200:
-          description: measurements list
-  /series:
-    get:
-      operationId: api.series.search
-      summary: Get series list
-      description: Get list of all series in db
-      responses:
-        200:
-          description: series list
   /workers/congressional-outlook/:
     post:
       operationId: api.workers.congressional_outlook.post

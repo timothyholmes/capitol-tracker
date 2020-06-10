@@ -17,9 +17,7 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const { data } = await axios.get('http://localhost:5000/v1/measurements')
-    const measurements = data.map((e) => e.name).join(',')
-    const response = await axios.get(`http://localhost:5000/v1/poll-data?measurements=${measurements}`)
+    const response = await axios.get(`http://localhost:5000/v1/poll-data?measurements=cat,dog`)
     this.setState((state) => {
       const pollsByStance = groupBy(response.data, (pollNode) => pollNode.stance)
       return {

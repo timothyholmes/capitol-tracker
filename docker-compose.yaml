@@ -18,17 +18,14 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      - INFLUXDB_DB='capitol_tracker'
-      - INFLUXDB_ADMIN_USER='root'
-      - INFLUXDB_ADMIN_PASSWORD='password'
-      - config=/etc/influxdb/influxdb.conf
   backend:
     build:
       context: ./backend/
       dockerfile: Dockerfile
     environment:
-      - INFLUXDB_HOST=influxdb
+      - INFLUXDB_HOST=https://eu-central-1-1.aws.cloud2.influxdata.com
+      - INFLUXDB_TOKEN=5wclwKUdI02-rxzOINa7eVnz37ohW9YN8Lh3PxL-NxuDqNRvtn2wKY7fPo6a-LaIGmcvIUKlcTQhjXrmRZGwNw==
+      - INFLUXDB_ORG=timholmez@gmail.com
       - API_HOST=localhost
       - API_PORT=5000
     ports:
