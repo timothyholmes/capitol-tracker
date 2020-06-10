@@ -6,6 +6,10 @@ import { RGBA } from './rgbaColor'
 
 import './App.css';
 
+const API_PROTOCOL = process.env.REACT_APP_API_PROTOCOL || 'http'
+const API_HOST = process.env.REACT_APP_API_HOST || 'localhost'
+const API_PORT = process.env.REACT_APP_API_PORT || 5000
+
 class App extends React.Component {
   state = {
     time: [],
@@ -17,7 +21,7 @@ class App extends React.Component {
   }
 
   async getDataFromApi() {
-    const response = await axios.get(`http://localhost:5000/v1/poll-data?measurements=cat,dog`)
+    const response = await axios.get(`${API_PROTOCOL}://${API_HOST}:${API_PORT}/v1/poll-data?measurements=cat,dog`)
     this.setState((state) => {
       const pollsByStance = groupBy(response.data, (pollNode) => pollNode.stance)
       return {

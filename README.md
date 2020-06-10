@@ -60,8 +60,17 @@ OpenAPI documentation is found at http://localhost:5000/v1/ui/.
 `POST` the `/workers/*` routes in the UI to seed influx with poll data.
 
 ### Frontend
+
 ```
 cd ./frontend/
 npm install
+npm start
+```
+
+You can override which API the frontend points to with env vars. The default is http://localhost:5000.
+```
+REACT_APP_API_PROTOCOL=http \
+REACT_APP_API_HOST=localhost \
+REACT_APP_API_PORT=5000 \
 npm start
 ```
