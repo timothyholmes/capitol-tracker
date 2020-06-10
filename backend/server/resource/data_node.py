@@ -17,10 +17,10 @@ def create_data_node_batch(payload):
     return True
 
 
-def find(measurements):
+def find():
     print("in resource find")
 
-    rs = DataNode.search(measurements)
+    rs = DataNode.search()
 
     api_response = rs
 

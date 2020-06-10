@@ -25,7 +25,7 @@ class DataNode:
         }
 
     @staticmethod
-    def search(measurements):
+    def search():
         client = InfluxDBClient(url=host, token=token, org=org)
         query_api = client.query_api()
 
