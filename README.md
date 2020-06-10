@@ -6,6 +6,13 @@ Identifying trends in american politics with time series data.
 
 https://data.fivethirtyeight.com/
 
+## Cloud
+
+The app is deployed on AWS.
+
+API: http://api.capitol-tracker.tech/
+UI: http://ui.capitol-tracker.tech/
+
 ## Development Setup
 
 [Contribution steps](https://github.com/timothyholmes/capitol-tracker/wiki/Contribution-Model).
