@@ -15,6 +15,7 @@ connexion = "^2.7.0"
 aio_pika = "^6.6.1"
 aiormq = "^3.2.2"
 asyncio = "^3.4.3"
+influxdb-client = "^1.7.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
