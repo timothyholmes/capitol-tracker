@@ -2,12 +2,10 @@ from influxdb_client import InfluxDBClient, Point, WriteOptions
 from influxdb_client.client.write_api import SYNCHRONOUS
 import os
 
-host = "http://localhost:9999"
+host = os.environ.get("INFLUXDB_HOST")
 token = os.environ.get("INFLUXDB_TOKEN")
-org = "05d2d716fc83b000"
-bucket = "05d2d716fc83b001"
-# url = "{host}:{port}".format(host=host, port=8086)
-url = "{host}".format(host=host)
+org = os.environ.get("INFLUXDB_ORG")
+bucket = os.environ.get("INFLUXDB_BUCKET")
 
 class DataNode:
     """Model for Data Node"""
@@ -67,7 +65,7 @@ class DataNode:
                 time=time
             ).encode()
 
-        client = InfluxDBClient(url=url, token=token)
+        client = InfluxDBClient(url=host, token=token)
         write_client = client.write_api(write_options=SYNCHRONOUS)
 
         print("Writing to {bucket} in {org}".format(bucket=bucket, org=org))
