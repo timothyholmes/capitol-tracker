@@ -40,7 +40,7 @@ The database is influxdb cloud, for running locally [see the wiki.](https://gith
 
 ### Backend
 
-For more information on the required start up env vars, see the [running influx guide]((https://github.com/timothyholmes/capitol-tracker/wiki/Running-Influx-Cloud)).
+For more information on the required start up env vars, see the [running influx guide](https://github.com/timothyholmes/capitol-tracker/wiki/Running-Influx-Cloud).
 
 Run server:
 ```
