@@ -34,6 +34,35 @@ paths:
       operationId: api.event.post
       summary: Create event
       description: Create new entry in event measurement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  tags:
+                    description: key value pairs of tags to add to the event
+                    type: object
+                  fields:
+                    description: key value pairs of fields to add to the event
+                    type: object
+                    properties:
+                      lifecycle:
+                        description: 3 options - start, stop, occurred
+                        type: string
+                  time:
+                    description: Timestamp in MM/DD/YYYY format
+                    type: string
+            example:
+            - tags:
+                name: Event name
+                effect: Some way the even affected the worled
+              fields:
+                lifecycle: start
+              time: 04/10/1993
       responses:
         201:
           description: Event created
@@ -44,6 +73,35 @@ paths:
       operationId: api.event.post_candidate
       summary: Create event candidate
       description: Create new entry in event_candidate measurement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  tags:
+                    description: key value pairs of tags to add to the event
+                    type: object
+                  fields:
+                    description: key value pairs of fields to add to the event
+                    type: object
+                    properties:
+                      lifecycle:
+                        description: 3 options - start, stop, occurred
+                        type: string
+                  time:
+                    description: Timestamp in MM/DD/YYYY format
+                    type: string
+            example:
+            - tags:
+                name: Event name
+                effect: Some way the even affected the worled
+              fields:
+                lifecycle: start
+              time: 04/10/1993
       responses:
         201:
           description: Candidate created
