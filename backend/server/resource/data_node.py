@@ -8,9 +8,12 @@ import time
 def convert_to_nanoseconds(seconds):
     return int("{seconds}000000000".format(seconds=seconds))
 
+
 def create_data_node_batch(payload):
     for dic in payload:
-        dic["time"] = convert_to_nanoseconds(calendar.timegm(time.strptime(dic["time"], '%m/%d/%Y')))
+        dic["time"] = convert_to_nanoseconds(
+            calendar.timegm(time.strptime(dic["time"], "%m/%d/%Y"))
+        )
 
     DataNode.create_batch(payload)
 

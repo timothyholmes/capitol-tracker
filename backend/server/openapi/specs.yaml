@@ -9,6 +9,8 @@ servers:
 paths:
   /_health:
     get:
+      tags:
+      - meta
       operationId: api.health.get
       summary: Server is up
       description: Server is up
@@ -17,14 +19,38 @@ paths:
           description: Server is up
   /data-node:
     post:
+      tags:
+      - general
       operationId: api.data_node.post
       summary: Batch node upload
       description: Batch node upload
       responses:
         201:
           description: Batch created
+  /event:
+    post:
+      tags:
+      - event
+      operationId: api.event.post
+      summary: Create event
+      description: Create new entry in event measurement
+      responses:
+        201:
+          description: Event created
+  /event-candidate:
+    post:
+      tags:
+      - event
+      operationId: api.event.post_candidate
+      summary: Create event candidate
+      description: Create new entry in event_candidate measurement
+      responses:
+        201:
+          description: Candidate created
   /poll-data:
     get:
+      tags:
+      - general
       operationId: api.poll_data.search
       parameters:
         - in: query
@@ -39,6 +65,8 @@ paths:
           description: Search results
   /workers/congressional-outlook/:
     post:
+      tags:
+      - worker
       operationId: api.workers.congressional_outlook.post
       summary: Import congressional outlook ratings
       description: Imports congressional outlook ratings to db
@@ -47,6 +75,8 @@ paths:
           description: data set imported
   /workers/trump-approval-rating/:
     post:
+      tags:
+      - worker
       operationId: api.workers.trump_approval_rating.post
       summary: Import trump approval ratings
       description: Imports approval ratings to db
