@@ -7,6 +7,7 @@ token = os.environ.get("INFLUXDB_TOKEN")
 org = os.environ.get("INFLUXDB_ORG")
 bucket = os.environ.get("INFLUXDB_BUCKET")
 
+
 class DataNode:
     """Model for Data Node"""
 
@@ -29,7 +30,9 @@ class DataNode:
         client = InfluxDBClient(url=host, token=token, org=org)
         query_api = client.query_api()
 
-        tables = query_api.query("from(bucket: \"capitol_tracker\")|> range(start:-1200000h)")
+        tables = query_api.query(
+            'from(bucket: "capitol_tracker")|> range(start:-1200000h)'
+        )
 
         result = []
         for table in tables:
@@ -41,7 +44,7 @@ class DataNode:
                 poll_node["time"] = record.values["_time"]
 
                 result.append(poll_node)
-        
+
         return result
 
     @staticmethod
@@ -51,18 +54,22 @@ class DataNode:
             time = source["time"]
             tagset = []
             fieldset = []
-            
+
             for key, value in source["fields"].items():
-                fieldset.append("{key}={value}".format(key=key, value=value))
+                fieldset.append(
+                    "{key}={value}".format(key=key, value=str(value).replace(" ", "_"))
+                )
 
             for key, value in source["tags"].items():
-                tagset.append("{key}={value}".format(key=key, value=value))
+                tagset.append(
+                    "{key}={value}".format(key=key, value=str(value).replace(" ", "_"))
+                )
 
             return "{measurement},{tagset} {fieldset} {time}".format(
                 measurement=measurement,
                 tagset=",".join(tagset),
                 fieldset=",".join(fieldset),
-                time=time
+                time=time,
             ).encode()
 
         client = InfluxDBClient(url=host, token=token)
@@ -70,10 +77,7 @@ class DataNode:
 
         print("Writing to {bucket} in {org}".format(bucket=bucket, org=org))
 
-        data = list(map(
-            to_line_protocol,
-            batch
-        ))
+        data = list(map(to_line_protocol, batch))
 
         response = write_client.write(bucket, org, data)
 
