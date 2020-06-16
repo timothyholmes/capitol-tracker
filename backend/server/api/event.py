@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from resource.data_node import create_data_node_batch
+from resource.event import find
 
 event_candidate_measurement = "event_candidate"
 event_measurement = "event"
@@ -28,3 +29,11 @@ def post():
 
 def post_candidate():
     return add_event(request.get_json(), event_candidate_measurement)
+
+
+def get():
+    return jsonify(find("event"))
+
+
+def get_candidate():
+    return jsonify(find("event_candidate"))

@@ -28,6 +28,15 @@ paths:
         201:
           description: Batch created
   /event:
+    get:
+      tags:
+      - event
+      operationId: api.event.get
+      summary: Found events
+      description: Events matching search
+      responses:
+        200:
+          description: Events object array
     post:
       tags:
       - event
@@ -67,6 +76,15 @@ paths:
         201:
           description: Event created
   /event-candidate:
+    get:
+      tags:
+      - event
+      operationId: api.event.get_candidate
+      summary: Found event candidates
+      description: Event candidates matching search
+      responses:
+        200:
+          description: Event candidates object array
     post:
       tags:
       - event
