@@ -123,6 +123,29 @@ paths:
       responses:
         201:
           description: Candidate created
+  /promote-event:
+    put:
+      tags:
+      - event
+      operationId: api.event.promote_candidate
+      summary: Promote candidate to event
+      description: Move candidate by id to the events measurement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - a487c133-aa58-4df3-a0bd-1a49ae7d62d3
+              751612a0-4246-4739-aac5-6b3f4cbd3690
+              313b1a04-a7c2-491e-b762-ec9ca930cad4
+              db0970d3-04f7-42c4-8d5a-873e1055988a
+      responses:
+        200:
+          description: Event was promoted
   /poll-data:
     get:
       tags:

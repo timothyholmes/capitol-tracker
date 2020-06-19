@@ -3,6 +3,7 @@ import os
 from models.data_node import DataNode
 import calendar
 import time
+import uuid
 
 
 def convert_to_nanoseconds(seconds):
@@ -11,6 +12,7 @@ def convert_to_nanoseconds(seconds):
 
 def create_data_node_batch(payload):
     for dic in payload:
+        dic["tags"]["event_id"] = uuid.uuid4()
         dic["time"] = convert_to_nanoseconds(
             calendar.timegm(time.strptime(dic["time"], "%m/%d/%Y"))
         )

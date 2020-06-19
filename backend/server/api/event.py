@@ -8,12 +8,14 @@ event_measurement = "event"
 event_type_enum = dict([("start", 0), ("stop", 1), ("occurred", 2)])
 
 
-def add_event(payload, measurement):
+def add_event(payload, candidate):
     def add_measurement(dic):
-        dic["measurement"] = measurement
+        dic["measurement"] = event_measurement
         dic.get("fields")["lifecycle"] = event_type_enum.get(
             dic.get("fields").get("lifecycle")
         )
+        if candidate:
+            dic.get("tags")["candidate"] = 1
         return dic
 
     nodes = list(map(add_measurement, payload))
@@ -24,16 +26,21 @@ def add_event(payload, measurement):
 
 
 def post():
-    return add_event(request.get_json(), event_measurement)
+    return add_event(request.get_json(), False)
 
 
 def post_candidate():
-    return add_event(request.get_json(), event_candidate_measurement)
+    return add_event(request.get_json(), True)
 
 
 def get():
-    return jsonify(find("event"))
+    return jsonify(find({}, {candidate: 0}))
 
 
 def get_candidate():
-    return jsonify(find("event_candidate"))
+    return jsonify(find({}, {}))
+
+
+def promote_candidate():
+
+    return ""
