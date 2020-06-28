@@ -16,9 +16,22 @@ class Search(DataNode):
         client = InfluxDBClient(url=host, token=token, org=org)
         query_api = client.query_api()
 
+        def format_list_filter(key):
+            def format_list_filter_value(value):
+                return 'r["{key}"] == "{value}"'.format(key=key, value=value)
+
+            return format_list_filter_value
+
         def format_filter_statement(k_v_pair):
-            return 'filter(fn: (r) => r[{key}] == "{value}")'.format(
-                key=k_v_pair[0], value=k_v_pair[0]
+            if type(k_v_pair[1]) is list:
+                return "filter(fn: (r) => {or_statement})".format(
+                    or_statement=" or ".join(
+                        list(map(format_list_filter(k_v_pair[0]), k_v_pair[1]))
+                    )
+                )
+
+            return 'filter(fn: (r) => r["{key}"] == "{value}")'.format(
+                key=k_v_pair[0], value=k_v_pair[1]
             )
 
         query = 'from(bucket: "capitol_tracker") |> range(start: {start}) |> filter(fn: (r) => r["_measurement"] == "{measurement}")'.format(
@@ -32,6 +45,8 @@ class Search(DataNode):
                     list(map(format_filter_statement, self.tags.items()))
                 ),
             )
+
+        print(query)
 
         tables = query_api.query(query)
 
