@@ -26,28 +26,6 @@ class DataNode:
         }
 
     @staticmethod
-    def search():
-        client = InfluxDBClient(url=host, token=token, org=org)
-        query_api = client.query_api()
-
-        tables = query_api.query(
-            'from(bucket: "capitol_tracker")|> range(start:-1200000h)'
-        )
-
-        result = []
-        for table in tables:
-            for record in table.records:
-                poll_node = {}
-
-                poll_node["stance"] = record.values["stance"]
-                poll_node[record.values["_field"]] = record.values["_value"]
-                poll_node["time"] = record.values["_time"]
-
-                result.append(poll_node)
-
-        return result
-
-    @staticmethod
     def create_batch(batch):
         def to_line_protocol(source):
             measurement = source["measurement"]

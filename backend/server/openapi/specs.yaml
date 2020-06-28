@@ -28,6 +28,15 @@ paths:
         201:
           description: Batch created
   /event:
+    get:
+      tags:
+      - event
+      operationId: api.event.get
+      summary: Found events
+      description: Events matching search
+      responses:
+        200:
+          description: Events object array
     post:
       tags:
       - event
@@ -67,6 +76,15 @@ paths:
         201:
           description: Event created
   /event-candidate:
+    get:
+      tags:
+      - event
+      operationId: api.event.get_candidate
+      summary: Found event candidates
+      description: Event candidates matching search
+      responses:
+        200:
+          description: Event candidates object array
     post:
       tags:
       - event
@@ -105,6 +123,28 @@ paths:
       responses:
         201:
           description: Candidate created
+  /event-candidate/promote:
+    put:
+      tags:
+      - event
+      operationId: api.event.promote_candidate
+      summary: Promote candidate to event
+      description: Move candidate by id to the events measurement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - Some event name
+            - another event name
+            - event name three
+      responses:
+        200:
+          description: Event was promoted
   /poll-data:
     get:
       tags:
