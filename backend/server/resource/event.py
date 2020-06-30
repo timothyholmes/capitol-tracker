@@ -1,151 +1,60 @@
-from models.search import Search
+from models.event_search import EventSearch
 from resource.data_node import create_data_node_batch
+from models.event import Event
+from pymongo import MongoClient
+import uuid
+import os
 
-event_measurement = "event"
+host = os.environ.get("MONGO_HOST")
+user = os.environ.get("MONGO_USER")
+password = os.environ.get("MONGO_PASSWORD")
 
-event_type_enum = dict(
-    [
-        ("start", 0),
-        ("stop", 1),
-        ("occurred", 2),
-        (0.0, "start"),
-        (1.0, "stop"),
-        (2.0, "occurred"),
-    ]
+mongo_string = "mongodb+srv://{user}:{password}@{host}/capitol_tracker?retryWrites=true&w=majority".format(
+    user=user, password=password, host=host
 )
 
 
 def add(payload, is_candidate):
-    def add_measurement(dic):
-        dic["measurement"] = event_measurement
-        dic["fields"]["lifecycle"] = event_type_enum.get(
-            dic.get("fields").get("lifecycle")
-        )
+    dic = payload
+    candidate = False
+    event_id = uuid.uuid4()
 
-        if is_candidate:
-            dic["tags"]["candidate"] = 1
-        else:
-            dic["tags"]["candidate"] = 0
+    if is_candidate:
+        candidate = True
 
-        return dic
+    client = MongoClient(mongo_string)
 
-    nodes = list(map(add_measurement, payload))
-
-    create_data_node_batch(nodes)
-
-    return payload
-
-
-def find(fields, tags):
-    search = Search(
-        measurement="event",
-        time={"start": "1770-06-19T20:07:36.356Z"},
-        fields=fields,
-        tags=tags,
+    event = Event(
+        client,
+        str(event_id),
+        payload["name"],
+        payload["effect"],
+        payload["namespace"],
+        candidate,
+        payload["start"],
+        payload["end"],
     )
 
-    tables = search.get()
+    return event.write()
 
-    result = dict()
 
-    for table in tables:
-        for record in table.records:
-            lifecycle_enum = dict([(1.0, "stop"), (0.0, "start")])
+def find(event_id, name, effect, namespace, candidate, start, end):
+    client = MongoClient(mongo_string)
 
-            if record.values["_value"] == 2.0:
-                event = {}
+    search = EventSearch(
+        client, event_id, name, effect, namespace, candidate, start, end
+    )
 
-                event["name"] = record.values["name"].replace("_", " ")
-                event["effect"] = record.values["effect"].replace("_", " ")
-                event["time"] = record.values["_time"]
+    results = search.get()
 
-                if "event_id" in record.values:
-                    event["event_id"] = record.values["event_id"]
-
-                result[record.values["name"]] = event
-            elif record.values["_value"] < 2.0:
-                event = {}
-
-                if record.values["name"] in result:
-                    event = result.get(record.values["name"])
-
-                event["name"] = record.values["name"].replace("_", " ")
-                event["effect"] = record.values["effect"].replace("_", " ")
-
-                if not "time" in event:
-                    event["time"] = {}
-
-                event["time"][
-                    lifecycle_enum.get(record.values["_value"])
-                ] = record.values["_time"]
-
-                result[record.values["name"]] = event
-
-    return list(result.values())
+    return list(map(lambda result: result.serialize(), results))
 
 
 def promote(event_ids):
-    search = Search(
-        measurement="event",
-        time={"start": "1770-06-19T20:07:36.356Z"},
-        fields={},
-        tags={"event_id": event_ids},
-    )
+    client = MongoClient(mongo_string)
 
-    tables = search.get()
+    search = EventSearch(client, event_ids, False, False, False, True, False, False)
 
-    result = dict()
+    search.getAndUpdate()
 
-    for table in tables:
-        for record in table.records:
-            if record.values["_value"] == 2.0:
-                event = {}
-
-                event["tags"] = {
-                    "name": record.values["name"].replace("_", " "),
-                    "effect": record.values["effect"].replace("_", " "),
-                }
-
-                event["fields"] = {
-                    record.values["_field"]: event_type_enum.get(
-                        record.values["_value"]
-                    )
-                }
-
-                print(record.values["_value"])
-
-                event["time"] = record.values["_time"].strftime("%m/%d/%Y")
-
-                if "event_id" in record.values:
-                    event["tags"]["event_id"] = record.values["event_id"]
-
-                result[record.values["name"]] = event
-            elif record.values["_value"] < 2.0:
-                event = {}
-
-                if record.values["name"] in result:
-                    event = result.get(record.values["name"])
-
-                event["tags"] = {
-                    "name": record.values["name".replace("_", " ")],
-                    "effect": record.values["effect"].replace("_", " "),
-                }
-
-                event["fields"] = {
-                    record.values["_field"]: event_type_enum.get(
-                        record.values["_value"]
-                    )
-                }
-
-                if not "time" in event:
-                    event["time"] = {}
-
-                event["time"][
-                    event_type_enum.get(record.values["_value"])
-                ] = record.values["_time"].strftime("%m/%d/%Y")
-
-                result[record.values["name"]] = event
-
-    print(list(result.values()))
-
-    return add(list(result.values()), False)
+    return True

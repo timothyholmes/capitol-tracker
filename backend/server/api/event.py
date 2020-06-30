@@ -12,11 +12,31 @@ def post_candidate():
 
 
 def get():
-    return jsonify(find({}, {"candidate": 0}))
+    return jsonify(
+        find(
+            request.args.get("event_id"),
+            request.args.get("name"),
+            request.args.get("effect"),
+            request.args.get("namespace"),
+            False,
+            request.args.get("start"),
+            request.args.get("end"),
+        )
+    )
 
 
 def get_candidate():
-    return jsonify(find({}, {"candidate": 1}))
+    return jsonify(
+        find(
+            request.args.get("event_id"),
+            request.args.get("name"),
+            request.args.get("effect"),
+            request.args.get("namespace"),
+            True,
+            request.args.get("start"),
+            request.args.get("end"),
+        )
+    )
 
 
 def promote_candidate():
