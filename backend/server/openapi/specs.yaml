@@ -17,16 +17,6 @@ paths:
       responses:
         200:
           description: Server is up
-  /data-node:
-    post:
-      tags:
-      - general
-      operationId: api.data_node.post
-      summary: Batch node upload
-      description: Batch node upload
-      responses:
-        201:
-          description: Batch created
   /event:
     get:
       tags:
@@ -34,6 +24,12 @@ paths:
       operationId: api.event.get
       summary: Found events
       description: Events matching search
+      parameters:
+        - in: query
+          name: namespace
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: Events object array
@@ -48,30 +44,29 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  tags:
-                    description: key value pairs of tags to add to the event
-                    type: object
-                  fields:
-                    description: key value pairs of fields to add to the event
-                    type: object
-                    properties:
-                      lifecycle:
-                        description: 3 options - start, stop, occurred
-                        type: string
-                  time:
-                    description: Timestamp in MM/DD/YYYY format
-                    type: string
+              type: object
+              properties:
+                name:
+                  description: Name of event
+                  type: string
+                effect:
+                  description: Effect of event
+                  type: string
+                namespace:
+                  description: Effect of event
+                  type: string
+                start:
+                  description: Timestamp in MM/DD/YYYY format
+                  type: string
+                end:
+                  description: Timestamp in MM/DD/YYYY format
+                  type: string
             example:
-            - tags:
-                name: Event name
-                effect: Some way the even affected the worled
-              fields:
-                lifecycle: start
-              time: 04/10/1993
+              name: Event name
+              effect: Some way the even affected the world
+              namespace: protests
+              start: 04/10/1993
+              end: 04/10/1993
       responses:
         201:
           description: Event created
@@ -82,6 +77,12 @@ paths:
       operationId: api.event.get_candidate
       summary: Found event candidates
       description: Event candidates matching search
+      parameters:
+        - in: query
+          name: namespace
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: Event candidates object array
@@ -96,30 +97,29 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  tags:
-                    description: key value pairs of tags to add to the event
-                    type: object
-                  fields:
-                    description: key value pairs of fields to add to the event
-                    type: object
-                    properties:
-                      lifecycle:
-                        description: 3 options - start, stop, occurred
-                        type: string
-                  time:
-                    description: Timestamp in MM/DD/YYYY format
-                    type: string
+              type: object
+              properties:
+                name:
+                  description: Name of event
+                  type: string
+                effect:
+                  description: Effect of event
+                  type: string
+                namespace:
+                  description: Effect of event
+                  type: string
+                start:
+                  description: Timestamp in MM/DD/YYYY format
+                  type: string
+                end:
+                  description: Timestamp in MM/DD/YYYY format
+                  type: string
             example:
-            - tags:
-                name: Event name
-                effect: Some way the even affected the worled
-              fields:
-                lifecycle: start
-              time: 04/10/1993
+              name: Event name
+              effect: Some way the even affected the world
+              namespace: protests
+              start: 04/10/1993
+              end: 04/10/1993
       responses:
         201:
           description: Candidate created
@@ -139,17 +139,17 @@ paths:
               items:
                 type: string
             example:
-            - Some event name
-            - another event name
-            - event name three
+            - 64e0e091-be77-489b-a8a1-9f4173b716a8
+            - 64378c05-8b29-47f3-8288-f8f8467c9a91
+            - 4e4300ab-c7cd-4342-85ec-7cd597829047
       responses:
         200:
           description: Event was promoted
-  /poll-data:
+  /poll:
     get:
       tags:
-      - general
-      operationId: api.poll_data.search
+      - poll
+      operationId: api.poll.search
       parameters:
         - in: query
           name: measurements
@@ -161,6 +161,15 @@ paths:
       responses:
         200:
           description: Search results
+    post:
+      tags:
+      - poll
+      operationId: api.poll.post
+      summary: Batch poll data upload
+      description: Batch poll data upload
+      responses:
+        201:
+          description: Batch created
   /workers/congressional-outlook/:
     post:
       tags:

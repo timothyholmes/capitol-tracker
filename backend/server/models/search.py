@@ -34,9 +34,23 @@ class Search(DataNode):
                 key=k_v_pair[0], value=k_v_pair[1]
             )
 
-        query = 'from(bucket: "capitol_tracker") |> range(start: {start}) |> filter(fn: (r) => r["_measurement"] == "{measurement}")'.format(
-            start=self.time["start"], measurement=self.measurement
+        query = 'from(bucket: "capitol_tracker") |> range(start: {start})'.format(
+            start=self.time["start"]
         )
+
+        if type(self.measurement) is list:
+            query = "{base_query} |> {measurement_filter}".format(
+                base_query=query,
+                measurement_filter=" |> ".join(
+                    list(
+                        map(format_filter_statement, ["_measurement", self.measurement])
+                    )
+                ),
+            )
+        else:
+            query = '{base_query} |> filter(fn: (r) => r["_measurement"] == "{value}")'.format(
+                value=self.measurement
+            )
 
         if self.tags:
             query = "{base_query} |> {tag_filter}".format(
@@ -45,8 +59,6 @@ class Search(DataNode):
                     list(map(format_filter_statement, self.tags.items()))
                 ),
             )
-
-        print(query)
 
         tables = query_api.query(query)
 

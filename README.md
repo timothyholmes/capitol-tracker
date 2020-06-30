@@ -54,6 +54,9 @@ INFLUXDB_ORG=05d3ddc654a5d000 \
 INFLUXDB_BUCKET=05d3de9089e5d000 \
 API_PORT=5000 \
 API_HOST=localhost \
+MONGO_USER=user \
+MONGO_PASSWORD=pword \
+MONGO_HOST=localhost:3306 \
 poetry run python server/main.py
 ```
 

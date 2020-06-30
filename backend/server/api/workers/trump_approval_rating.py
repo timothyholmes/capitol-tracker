@@ -29,7 +29,7 @@ def post():
             }
         )
 
-    batch_url = "http://{host}:{port}/v1/data-node".format(
+    batch_url = "http://{host}:{port}/v1/poll".format(
         host=os.environ.get("API_HOST"), port=os.environ.get("API_PORT")
     )
 
