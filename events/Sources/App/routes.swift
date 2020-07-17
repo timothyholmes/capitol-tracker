@@ -9,9 +9,12 @@ func routes(_ app: Application) throws {
         return "GET /event"
     }
     
-    
-    app.on(.POST, "v1", "event", body: .collect(maxSize: "1mb")) { req -> String in
-        return "POST /event"
+    app.post("v1", "event") { req -> Event in
+        do {
+            return try createEvent(req: req)
+        } catch {
+            throw Abort(.notFound)
+        }
     }
     
     app.get("hello", ":name") { req -> String in
