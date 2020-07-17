@@ -13,14 +13,7 @@ func routes(_ app: Application) throws {
         do {
             return try createEvent(req: req)
         } catch {
-            throw Abort(.notFound)
+            throw Abort(.internalServerError)
         }
-    }
-    
-    app.get("hello", ":name") { req -> String in
-        guard let name = req.parameters.get("name", as: String.self) else {
-            throw Abort(.badRequest)
-        }
-        return "Hello \(name)"
     }
 }
