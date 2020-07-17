@@ -69,6 +69,12 @@ OpenAPI documentation is found at http://localhost:5000/v1/ui/.
 
 `POST` the `/workers/*` routes in the UI to seed influx with poll data.
 
+### Events
+
+```
+docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=pw -d mysql:tag
+```
+
 ### Frontend
 
 ```
